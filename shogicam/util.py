@@ -33,3 +33,17 @@ def label_name(idx):
         return "v" + LABELS_JA[idx - len(LABELS)]
     else:
         return " ・"
+
+def boardfile_to_content(f):
+    ret = np.empty((9, 9))
+    for row, line in enumerate(f):
+        for i in range(9):
+            koma = line[3 * i + 1]
+            if koma in LABELS_JA:
+                idx = LABELS_JA.index(koma)
+            else:
+                idx = len(LABELS_JA) * 2
+            if line[3 * i] == 'v':
+                idx += len(LABELS_JA)
+            ret[row, i] = idx
+    return ret

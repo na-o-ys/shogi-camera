@@ -35,6 +35,14 @@ def learn(data_dir, outmodel_path, model):
     model = shogicam.learn.purple(data_dir, verbose=True)
     shogicam.learn.save_model(model, outmodel_path)
 
+@main.command(help='Eval model')
+@click.argument('model_path', type=click.Path(exists=True))
+@click.option('--sente', '-s', is_flag=True)
+@click.option('--data-dir', '-d', type=click.Path(exists=True), default='data/board')
+def eval_model(model_path, sente, data_dir):
+    x, y = shogicam.data.load_validation_board_data(data_dir, sente)
+    shogicam.predict.eval_model(model_path, x, y)
+
 @main.group(help='Generate train data')
 def gen_traindata():
     pass
@@ -58,6 +66,13 @@ def empty_cell(img_dir, outdata_path):
 @click.option('--outdata-path', '-o', type=click.Path(), default='data/etl8.npz')
 def etl8(etl8_dir, outdata_path):
     shogicam.data.gen_etl8(etl8_dir, outdata_path)
+    print('finished')
+
+@gen_traindata.command(help='Generate validation board data')
+@click.option('--img-dir', '-i', type=click.Path(exists=True), default='images/board')
+@click.option('--outdata-path', '-o', type=click.Path(), default='data/board/cells.npy')
+def validation_board(img_dir, outdata_path):
+    shogicam.data.gen_validation_board(img_dir, outdata_path)
     print('finished')
 
 # 必要無さそう

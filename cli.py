@@ -32,7 +32,7 @@ def predict(img_path, model, model_path):
 @click.option('--outmodel-path', '-o', type=click.Path(), default='models/purple.h5')
 @click.option('--model', '-m', default='purple')
 def learn(data_dir, outmodel_path, model):
-    model = shogicam.learn.purple(data_dir, verbose=True)
+    model = shogicam.learn.learn_model(model, data_dir, verbose=True)
     shogicam.learn.save_model(model, outmodel_path)
 
 @main.command(help='Eval model')

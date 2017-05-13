@@ -10,3 +10,5 @@ models/arg_nodrop_1024fully.h5 filter=lfs diff=lfs merge=lfs -text
 models/conv_nodrop.h5 filter=lfs diff=lfs merge=lfs -text
 models/etl8_transfered.h5 filter=lfs diff=lfs merge=lfs -text
 models/nodrop_1024fully.h5 filter=lfs diff=lfs merge=lfs -text
+models/blue.h5 filter=lfs diff=lfs merge=lfs -text
+models/purple2.h5 filter=lfs diff=lfs merge=lfs -text

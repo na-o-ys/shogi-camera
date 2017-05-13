@@ -14,7 +14,7 @@ def main():
 
 @main.command(help='Predict shogi board contents')
 @click.argument('img_path', type=click.Path(exists=True))
-@click.option('--model', '-m', default='purple')
+@click.option('--model', '-n', default='purple')
 @click.option('--model-path', '-m', default='models/purple.h5')
 def predict(img_path, model, model_path):
     raw_img = shogicam.util.load_img(img_path)
@@ -52,6 +52,13 @@ def koma(img_dir, outdata_dir):
 def empty_cell(img_dir, outdata_path):
     result = shogicam.data.gen_empty_cell_traindata(img_dir, outdata_path)
     print(result)
+
+@gen_traindata.command(help='Generate etl8 data')
+@click.option('--etl8-dir', '-i', type=click.Path(exists=True), default='ETL8G')
+@click.option('--outdata-path', '-o', type=click.Path(), default='data/etl8.npz')
+def etl8(etl8_dir, outdata_path):
+    shogicam.data.gen_etl8(etl8_dir, outdata_path)
+    print('finished')
 
 # 必要無さそう
 # @main.command(help='Detect corner coordinates')

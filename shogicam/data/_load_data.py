@@ -1,6 +1,8 @@
 import numpy as np
 import glob
 from shogicam.constant import *
+import shogicam.util
+import keras
 
 def load_data(data_dir):
     series_imgs, series_labels = load_koma_series(data_dir + "/koma")
@@ -41,3 +43,25 @@ def load_empty_cell(path):
     x = np.load(path)['imgs'].astype(np.float32)
     y = np.full((len(x), 2), [len(LABELS) * 2, 1000])
     return x, y
+
+def load_validation_board_data(data_dir, is_sente_only=False):
+    board_cells = np.load(data_dir + '/cells.npy')
+    board_cells = board_cells.reshape(len(board_cells) * 81, IMG_ROWS, IMG_COLS, 1)
+    board_contents = []
+    for fname in sorted(glob.glob(data_dir + '/*.txt')):
+        with open(fname, 'r') as f:
+            board_contents.append(shogicam.util.boardfile_to_content(f))
+    board_contents = np.array(board_contents)
+    board_contents = board_contents.reshape(len(board_contents) * 81)
+
+    idx = np.where(board_contents != len(LABELS) * 2)
+    nonempty_cells = board_cells[idx]
+    nonempty_contents = board_contents[idx]
+    if is_sente_only:
+        gote_idx = np.where(nonempty_contents >= len(LABELS))
+        nonempty_cells[gote_idx] = np.rot90(nonempty_cells[gote_idx], 2, (1, 2))
+        nonempty_contents[gote_idx] -= len(LABELS)
+        categories = len(LABELS)
+    else:
+        categories = len(LABELS) * 2 + 1
+    return nonempty_cells, keras.utils.to_categorical(nonempty_contents, categories)

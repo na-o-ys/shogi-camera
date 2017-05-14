@@ -18,7 +18,7 @@ RUN cd opencv && \
 
 RUN apt-get install -y python-pip python3-pip libhdf5-dev graphviz
 RUN pip3 install scipy scikit-learn pandas matplotlib jupyter tensorflow-gpu Pillow h5py keras
-RUN pip3 install click
+RUN pip3 install click scikit-image
 
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8

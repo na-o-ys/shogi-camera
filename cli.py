@@ -40,8 +40,13 @@ def learn(data_dir, outmodel_path, model):
 @click.option('--sente', '-s', is_flag=True)
 @click.option('--data-dir', '-d', type=click.Path(exists=True), default='data/board')
 def eval_model(model_path, sente, data_dir):
-    x, y = shogicam.data.load_validation_board_data(data_dir, sente)
+    x, y = shogicam.data.load_validation_cells(data_dir, sente)
     shogicam.predict.eval_model(model_path, x, y)
+    print()
+    data = shogicam.data.load_validation_board_data(data_dir, sente)
+    for (i, (x, y)) in enumerate(data):
+        print("board {}".format(i + 1))
+        shogicam.predict.eval_model(model_path, x, y)
 
 @main.group(help='Generate train data')
 def gen_traindata():

@@ -6,7 +6,6 @@ import shogicam.util
 
 def eval_model(model_path, x, y):
     model = load_model(model_path)
-    loss, acc = model.evaluate(x, y)
-    print()
+    loss, acc = model.evaluate(x, y, verbose=False)
     print("acc: {} loss: {}".format(acc, loss))
     K.clear_session()

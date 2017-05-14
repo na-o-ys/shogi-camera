@@ -46,22 +46,37 @@ def load_empty_cell(path):
 
 def load_validation_board_data(data_dir, is_sente_only=False):
     board_cells = np.load(data_dir + '/cells.npy')
-    board_cells = board_cells.reshape(len(board_cells) * 81, IMG_ROWS, IMG_COLS, 1)
+    board_cells = board_cells.reshape(len(board_cells), 9, 9, IMG_ROWS, IMG_COLS, 1)
     board_contents = []
     for fname in sorted(glob.glob(data_dir + '/*.txt')):
         with open(fname, 'r') as f:
             board_contents.append(shogicam.util.boardfile_to_content(f))
     board_contents = np.array(board_contents)
-    board_contents = board_contents.reshape(len(board_contents) * 81)
 
-    idx = np.where(board_contents != len(LABELS) * 2)
-    nonempty_cells = board_cells[idx]
-    nonempty_contents = board_contents[idx]
+    num_boards = len(board_cells)
     if is_sente_only:
-        gote_idx = np.where(nonempty_contents >= len(LABELS))
-        nonempty_cells[gote_idx] = np.rot90(nonempty_cells[gote_idx], 2, (1, 2))
-        nonempty_contents[gote_idx] -= len(LABELS)
         categories = len(LABELS)
     else:
         categories = len(LABELS) * 2 + 1
-    return nonempty_cells, keras.utils.to_categorical(nonempty_contents, categories)
+
+    ret = []
+    for i in range(num_boards):
+        idx = np.where(board_contents[i] != len(LABELS) * 2)
+        nonempty_cells = board_cells[i][idx]
+        nonempty_contents = board_contents[i][idx]
+        if is_sente_only:
+            gote_idx = np.where(nonempty_contents >= len(LABELS))
+            nonempty_cells[gote_idx] = np.rot90(nonempty_cells[gote_idx], 2, (1, 2))
+            nonempty_contents[gote_idx] -= len(LABELS)
+        y = keras.utils.to_categorical(nonempty_contents, categories)
+        ret.append((nonempty_cells, y))
+    return ret
+
+def load_validation_cells(data_dir, is_sente_only=False):
+    data = load_validation_board_data(data_dir, is_sente_only)
+    x_all = np.empty((0, 64, 64, 1))
+    y_all = np.empty((0, data[0][1].shape[1]))
+    for (x, y) in data:
+        x_all = np.r_[x_all, x]
+        y_all = np.r_[y_all, y]
+    return x_all, y_all

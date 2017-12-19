@@ -57,7 +57,7 @@ def learn(data_dir, verbose=False, test_size=0.05):
 
 def gen_model():
     model = load_model("models/etl8.h5")
-    for i in range(1):
+    for i in range(6):
         model.pop()
     for l in model.layers:
         l.trainable = False
@@ -65,11 +65,11 @@ def gen_model():
     # model.add(Dense(1024, name='shogi_dense_1'))
     # model.add(BatchNormalization(name='shogi_norm_1'))
     # model.add(PReLU(name='shogi_prelu_1'))
-    # model.add(Dropout(0.25, name='shogi_dropout_1'))
-    # model.add(Dense(1024, name='shogi_dense_2'))
-    # model.add(BatchNormalization(name='shogi_norm_2'))
-    # model.add(PReLU(name='shogi_prelu_2'))
-    # model.add(Dropout(0.5, name='shogi_dropout_2'))
+    model.add(Dropout(0.25, name='shogi_dropout_1'))
+    model.add(Dense(1024, name='shogi_dense_2'))
+    model.add(BatchNormalization(name='shogi_norm_2'))
+    model.add(PReLU(name='shogi_prelu_2'))
+    model.add(Dropout(0.35, name='shogi_dropout_2'))
     model.add(Dense(NUM_CLASSES, activation='softmax', name='shogi_dense_out'))
 
     model.compile(loss=keras.losses.categorical_crossentropy,

@@ -1,7 +1,7 @@
-From nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+From nvidia/cuda:8.0-cudnn6-devel-ubuntu16.04
 
 RUN apt-get update && \
-    apt-get install -y git wget sudo g++ python-dev python-pip python3-dev python3-pip && \
+    apt-get install -y apt-utils git wget sudo g++ python-dev python-pip python3-dev python3-pip && \
     pip install --upgrade pip && \
     pip install numpy && \
     pip3 install --upgrade pip && \

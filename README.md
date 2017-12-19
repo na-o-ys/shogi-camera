@@ -34,13 +34,17 @@ Docker host requirements. (fit for AWS p2 instance)
 # Quick Start
 
 ```
-$ python3 cli.py predict {your_photograph}
+$ python3 cli.py predict {image_file_path}
 ```
 
 or on a Docker container,
 
 ```
-$ ./run predict {your_photograph}
+$ docker run -it naoys/shogi-camera:nogpu python3 cli.py predict {image_file_path}
+```
+
+```
+$ docker run --runtime=nvidia -it naoys/shogi-camera:latest python3 cli.py predict {image_file_path}
 ```
 
 # Prediction Details

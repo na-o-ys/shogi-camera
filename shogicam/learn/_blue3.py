@@ -5,7 +5,7 @@ from keras.layers.advanced_activations import PReLU
 from keras.models import Sequential
 from keras.models import load_model
 from keras.preprocessing.image import ImageDataGenerator
-from ._load_traindata import load_traindata_nosplit
+from ._load_traindata import load_traindata_with_validation_board
 from shogicam.constant import *
 import shogicam.data
 from skimage.draw import line_aa

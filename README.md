@@ -2,13 +2,9 @@
 
 Shogi Camera is an experimental project which aims to extract shogi board information from pictures of shogi games.
 
-![hero](https://dl.dropboxusercontent.com/s/yr4590foh14mug6/shogi-camera-hero.png)
-
-The accuracy is not better for now.
+![hero](https://dl.dropboxusercontent.com/s/n8pnfuklsnwaz3b/shogicamera_hero.png)
 
 # System Requirements
-
-There are several distinct environment settings on which you can execute the program. One is your native machine and another is a Docker container.
 
 ## To execute on a native machine
 
@@ -24,7 +20,7 @@ There are several distinct environment settings on which you can execute the pro
 
 ## To execute on a GPU container
 
-Docker host requirements. (fit for AWS p2 instance)
+fits for AWS p2 instance
 
 - GPU (NVIDIA Tesla K80)
 - CUDA Toolkit / CUDA Driver
@@ -34,13 +30,17 @@ Docker host requirements. (fit for AWS p2 instance)
 # Quick Start
 
 ```
-$ python3 cli.py predict {your_photograph}
+$ python3 cli.py predict {image_file_path}
 ```
 
 or on a Docker container,
 
 ```
-$ ./run predict {your_photograph}
+$ docker run -it -v $PWD:/app naoys/shogi-camera:nogpu python3 cli.py predict {image_file_path}
+```
+
+```
+$ docker run --runtime=nvidia -it -v $PWD:/app naoys/shogi-camera:latest python3 cli.py predict {image_file_path}
 ```
 
 # Prediction Details

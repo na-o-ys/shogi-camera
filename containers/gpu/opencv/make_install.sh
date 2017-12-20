@@ -1,6 +1,6 @@
-wget https://github.com/opencv/opencv/archive/3.2.0.tar.gz
-tar -xvf 3.2.0.tar.gz
-cd opencv-3.2.0
+wget https://github.com/opencv/opencv/archive/3.3.1.tar.gz
+tar -xvf 3.3.1.tar.gz
+cd opencv-3.3.1
 mkdir build
 cd build
 cmake -D CUDA_ARCH_BIN=3.7 \

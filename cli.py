@@ -14,9 +14,8 @@ def main():
 
 @main.command(help='Predict shogi board contents')
 @click.argument('img_path', type=click.Path(exists=True))
-@click.option('--model', '-n', default='purple')
-@click.option('--model-path', '-m', default='models/purple.h5')
-def predict(img_path, model, model_path):
+@click.option('--model-path', '-m', default='models/blue3.h5')
+def predict(img_path, model_path):
     raw_img = shogicam.util.load_img(img_path)
     corners, score = shogicam.preprocess.detect_corners(raw_img)
     board = shogicam.preprocess.trim_board(raw_img, corners)
@@ -29,8 +28,8 @@ def predict(img_path, model, model_path):
 
 @main.command(help='Fit model')
 @click.option('--data-dir', '-d', type=click.Path(exists=True), default='data')
-@click.option('--outmodel-path', '-o', type=click.Path(), default='models/purple.h5')
-@click.option('--model', '-m', default='purple')
+@click.option('--outmodel-path', '-o', type=click.Path(), default='models/blue3.h5')
+@click.option('--model', '-m', default='blue3')
 def learn(data_dir, outmodel_path, model):
     model = shogicam.learn.learn_model(model, data_dir, verbose=True)
     shogicam.learn.save_model(model, outmodel_path)
@@ -40,10 +39,10 @@ def learn(data_dir, outmodel_path, model):
 @click.option('--sente', '-s', is_flag=True)
 @click.option('--data-dir', '-d', type=click.Path(exists=True), default='data/board')
 def eval_model(model_path, sente, data_dir):
-    x, y = shogicam.data.load_validation_cells(data_dir, sente)
+    x, y = shogicam.data.load_validation_cells(data_dir, sente, True)
     shogicam.predict.eval_model(model_path, x, y)
     print()
-    data = shogicam.data.load_validation_board_data(data_dir, sente)
+    data = shogicam.data.load_validation_board_data(data_dir, sente, True)
     for (i, (x, y)) in enumerate(data):
         print("board {}".format(i + 1))
         shogicam.predict.eval_model(model_path, x, y)
@@ -79,28 +78,6 @@ def etl8(etl8_dir, outdata_path):
 def validation_board(img_dir, outdata_path):
     shogicam.data.gen_validation_board(img_dir, outdata_path)
     print('finished')
-
-# 必要無さそう
-# @main.command(help='Detect corner coordinates')
-# @click.argument('img_path', type=click.Path(exists=True))
-# @click.option('--out-img-path', '-o', type=click.Path(), default=None)
-# def detect_corners(img_path, out_img_path):
-#     raw_img = shogicam.util.load_img(img_path)
-#     rect, score = shogicam.preprocess.detect_corners(raw_img)
-#     if out_img_path:
-#         drawed = shogicam.util.draw_rect(raw_img, rect)
-#         shogicam.util.save(drawed, out_img_path)
-#     rect = rect.tolist()
-#     decoded = {
-#         "coordinates": {
-#             "left-top": rect[0],
-#             "right-top": rect[1],
-#             "right-bottom": rect[2],
-#             "left-bottom": rect[3]
-#         },
-#         "score": score
-#     }
-#     print(decoded)
 
 if __name__ == '__main__':
     main()

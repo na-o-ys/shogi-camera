@@ -40,11 +40,11 @@ $ python3 cli.py predict {image_file_path}
 or on a Docker container,
 
 ```
-$ docker run -it naoys/shogi-camera:nogpu python3 cli.py predict {image_file_path}
+$ docker run -it -v $PWD:/app naoys/shogi-camera:nogpu python3 cli.py predict {image_file_path}
 ```
 
 ```
-$ docker run --runtime=nvidia -it naoys/shogi-camera:latest python3 cli.py predict {image_file_path}
+$ docker run --runtime=nvidia -it -v $PWD:/app naoys/shogi-camera:latest python3 cli.py predict {image_file_path}
 ```
 
 # Prediction Details

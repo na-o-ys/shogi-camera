@@ -2,7 +2,7 @@
 
 Shogi Camera is an experimental project which aims to extract shogi board information from pictures of shogi games.
 
-![hero](https://dl.dropboxusercontent.com/s/yr4590foh14mug6/shogi-camera-hero.png)
+![hero](https://dl.dropboxusercontent.com/s/n8pnfuklsnwaz3b/shogicamera_hero.png)
 
 The accuracy is not better for now.
 
